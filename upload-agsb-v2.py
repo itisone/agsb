@@ -188,7 +188,7 @@ def generate_links(domain, port_vm_ws, uuid_str):
 
     # === TLS节点 ===
     for ip, port_cf in cf_ips_tls.items():
-        ps_name = f"VMWS-TLS-{hostname}-{ip.split('.')[2]}-{port_cf}"
+        ps_name = f"ANDS-90-{hostname}-{ip.split('.')[2]}-{port_cf}"
         config = {
             "ps": ps_name, "add": ip, "port": port_cf, "id": uuid_str, "aid": "0",
             "net": "ws", "type": "none", "host": domain, "path": ws_path_full,
@@ -200,7 +200,7 @@ def generate_links(domain, port_vm_ws, uuid_str):
 
     # === 非TLS节点 ===
     for ip, port_cf in cf_ips_http.items():
-        ps_name = f"VMWS-HTTP-{hostname}-{ip.split('.')[2]}-{port_cf}"
+        ps_name = f"ANDS-H-90-{hostname}-{ip.split('.')[2]}-{port_cf}"
         config = {
             "ps": ps_name, "add": ip, "port": port_cf, "id": uuid_str, "aid": "0",
             "net": "ws", "type": "none", "host": domain, "path": ws_path_full,
@@ -213,7 +213,7 @@ def generate_links(domain, port_vm_ws, uuid_str):
     # === 直接使用域名和标准端口的节点 ===
     # TLS Direct
     direct_tls_config = {
-        "ps": f"VMWS-TLS-{hostname}-Direct-{domain[:15]}-443", 
+        "ps": f"ANDS-90-{hostname}-Direct-{domain[:15]}-443", 
         "add": domain, "port": "443", "id": uuid_str, "aid": "0",
         "net": "ws", "type": "none", "host": domain, "path": ws_path_full,
         "tls": "tls", "sni": domain
@@ -224,7 +224,7 @@ def generate_links(domain, port_vm_ws, uuid_str):
 
     # HTTP Direct
     direct_http_config = {
-        "ps": f"VMWS-HTTP-{hostname}-Direct-{domain[:15]}-80",
+        "ps": f"ANDS-H-90-{hostname}-Direct-{domain[:15]}-80",
         "add": domain, "port": "80", "id": uuid_str, "aid": "0",
         "net": "ws", "type": "none", "host": domain, "path": ws_path_full,
         "tls": ""
@@ -487,27 +487,27 @@ def install(args):
         }
         for ip, port_cf in cf_ips_tls.items():
             config = {
-                "ps": f"VMWS-TLS-{hostname}-{ip.split('.')[2]}-{port_cf}", "add": ip, "port": port_cf, "id": uuid_str, "aid": "0",
+                "ps": f"ANDS-90-{hostname}-{ip.split('.')[2]}-{port_cf}", "add": ip, "port": port_cf, "id": uuid_str, "aid": "0",
                 "net": "ws", "type": "none", "host": final_domain, "path": ws_path_full,
                 "tls": "tls", "sni": final_domain
             }
             all_links.append(generate_vmess_link(config))
         for ip, port_cf in cf_ips_http.items():
             config = {
-                "ps": f"VMWS-HTTP-{hostname}-{ip.split('.')[2]}-{port_cf}", "add": ip, "port": port_cf, "id": uuid_str, "aid": "0",
+                "ps": f"ANDS-H-90-{hostname}-{ip.split('.')[2]}-{port_cf}", "add": ip, "port": port_cf, "id": uuid_str, "aid": "0",
                 "net": "ws", "type": "none", "host": final_domain, "path": ws_path_full,
                 "tls": ""
             }
             all_links.append(generate_vmess_link(config))
         direct_tls_config = {
-            "ps": f"VMWS-TLS-{hostname}-Direct-{final_domain[:15]}-443",
+            "ps": f"ANDS-90-{hostname}-Direct-{final_domain[:15]}-443",
             "add": final_domain, "port": "443", "id": uuid_str, "aid": "0",
             "net": "ws", "type": "none", "host": final_domain, "path": ws_path_full,
             "tls": "tls", "sni": final_domain
         }
         all_links.append(generate_vmess_link(direct_tls_config))
         direct_http_config = {
-            "ps": f"VMWS-HTTP-{hostname}-Direct-{final_domain[:15]}-80",
+            "ps": f"ANDS-H-90-{hostname}-Direct-{final_domain[:15]}-80",
             "add": final_domain, "port": "80", "id": uuid_str, "aid": "0",
             "net": "ws", "type": "none", "host": final_domain, "path": ws_path_full,
             "tls": ""
